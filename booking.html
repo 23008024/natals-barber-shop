@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Now | Natal's Barber Shop</title>
+
+    <meta
+        name="description"
+        content="Book your next haircut at Natal's Barber Shop in Sandton, Johannesburg."
+    >
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="Natal's Barber Shop Home"
+            >
+                <span class="logo-main">NATAL'S</span>
+                <span class="logo-sub">BARBER SHOP</span>
+            </a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+
+                <a href="index.html">Home</a>
+
+                
+
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+
+                <a href="contact.html">Contact</a>
+
+                <a
+                    href="booking.html"
+                    class="nav-book active"
+                >
+                    Book Now
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- =========================
+             BOOKING HERO
+        ========================== -->
+        <section class="page-hero booking-hero">
+
+            <div class="container">
+
+                <p class="eyebrow">BOOK YOUR CHAIR</p>
+
+                <h1>Your Next Cut Starts Here.</h1>
+
+                <p class="hero-text">
+                    Choose your service, barber, date and time.
+                    We'll take care of the rest.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BOOKING SECTION
+        ========================== -->
+        <section class="booking-section section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <p class="eyebrow">MAKE AN APPOINTMENT</p>
+
+                    <h2>Book Your Visit.</h2>
+
+                    <p>
+                        Select your preferred service and barber,
+                        then choose a date and appointment time.
+                    </p>
+
+                </div>
+
+
+                <!-- =========================
+                     BOOKING FORM
+                ========================== -->
+                <form
+                    class="booking-form"
+                    id="bookingForm"
+                >
+
+                    <!-- STEP 1 -->
+                    <div class="booking-step">
+
+                        <div class="booking-step-heading">
+
+                            <span class="step-number">01</span>
+
+                            <div>
+                                <h3>Choose Your Service</h3>
+
+                                <p>
+                                    What would you like us to do?
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="service">
+                                Service
+                            </label>
+
+                            <select
+                                id="service"
+                                name="service"
+                                required
+                            >
+
+                                <option value="">
+                                    Select a service
+                                </option>
+
+                                <option
+                                    value="Classic Cut"
+                                    data-price="220"
+                                    data-duration="45"
+                                >
+                                    Classic Cut — R220
+                                </option>
+
+                                <option
+                                    value="Skin Fade"
+                                    data-price="260"
+                                    data-duration="60"
+                                >
+                                    Skin Fade — R260
+                                </option>
+
+                                <option
+                                    value="Textured Cut"
+                                    data-price="240"
+                                    data-duration="45"
+                                >
+                                    Textured Cut — R240
+                                </option>
+
+                                <option
+                                    value="Kids Cut"
+                                    data-price="170"
+                                    data-duration="30"
+                                >
+                                    Kids Cut — R170
+                                </option>
+
+                                <option
+                                    value="Beard Trim"
+                                    data-price="150"
+                                    data-duration="30"
+                                >
+                                    Beard Trim — R150
+                                </option>
+
+                                <option
+                                    value="Hot Towel Shave"
+                                    data-price="190"
+                                    data-duration="45"
+                                >
+                                    Hot Towel Shave — R190
+                                </option>
+
+                                <option
+                                    value="Beard Shape &amp; Line-Up"
+                                    data-price="130"
+                                    data-duration="30"
+                                >
+                                    Beard Shape &amp; Line-Up — R130
+                                </option>
+
+                                <option
+                                    value="Cut &amp; Beard"
+                                    data-price="330"
+                                    data-duration="75"
+                                >
+                                    Cut &amp; Beard — R330
+                                </option>
+
+                                <option
+                                    value="Natal's Signature"
+                                    data-price="390"
+                                    data-duration="90"
+                                >
+                                    Natal's Signature — R390
+                                </option>
+
+                                <option
+                                    value="Father &amp; Son"
+                                    data-price="360"
+                                    data-duration="90"
+                                >
+                                    Father &amp; Son — R360
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 2 -->
+                    <div class="booking-step">
+
+                        <div class="booking-step-heading">
+
+                            <span class="step-number">02</span>
+
+                            <div>
+                                <h3>Choose Your Barber</h3>
+
+                                <p>
+                                    Pick the barber you'd like to visit.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="barber">
+                                Barber
+                            </label>
+
+                            <select
+                                id="barber"
+                                name="barber"
+                                required
+                            >
+
+                                <option value="">
+                                    Select a barber
+                                </option>
+
+                                <option value="Natal Mokoena">
+                                    Natal Mokoena — Founder &amp; Master Barber
+                                </option>
+
+                                <option value="Liam Jacobs">
+                                    Liam Jacobs — Senior Barber
+                                </option>
+
+                                <option value="Thabo Dlamini">
+                                    Thabo Dlamini — Barber
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 3 -->
+                    <div class="booking-step">
+
+                        <div class="booking-step-heading">
+
+                            <span class="step-number">03</span>
+
+                            <div>
+                                <h3>Choose Date &amp; Time</h3>
+
+                                <p>
+                                    Select a date and appointment time.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <!-- Date -->
+                            <div class="form-group">
+
+                                <label for="date">
+                                    Date
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="date"
+                                    name="date"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Time -->
+                            <div class="form-group">
+
+                                <label for="time">
+                                    Time
+                                </label>
+
+                                <select
+                                    id="time"
+                                    name="time"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select a time
+                                    </option>
+
+                                    <option value="08:00">08:00</option>
+                                    <option value="08:30">08:30</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="09:30">09:30</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="10:30">10:30</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="11:30">11:30</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="12:30">12:30</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="13:30">13:30</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="14:30">14:30</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="15:30">15:30</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="16:30">16:30</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="17:30">17:30</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <p class="booking-note">
+                            Monday–Friday: 08:00–18:00 |
+                            Saturday: 08:00–16:00 |
+                            Sunday: Closed
+                        </p>
+
+                    </div>
+
+
+                    <!-- STEP 4 -->
+                    <div class="booking-step">
+
+                        <div class="booking-step-heading">
+
+                            <span class="step-number">04</span>
+
+                            <div>
+                                <h3>Your Details</h3>
+
+                                <p>
+                                    Tell us who we're booking for.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <!-- Name -->
+                            <div class="form-group">
+
+                                <label for="customerName">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="customerName"
+                                    name="customerName"
+                                    placeholder="Your full name"
+                                    autocomplete="name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Email -->
+                            <div class="form-group">
+
+                                <label for="customerEmail">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="customerEmail"
+                                    name="customerEmail"
+                                    placeholder="you@example.com"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Phone -->
+                            <div class="form-group">
+
+                                <label for="customerPhone">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="customerPhone"
+                                    name="customerPhone"
+                                    placeholder="+27 00 000 0000"
+                                    autocomplete="tel"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Notes -->
+                        <div class="form-group">
+
+                            <label for="notes">
+                                Notes
+                                <span class="optional">Optional</span>
+                            </label>
+
+                            <textarea
+                                id="notes"
+                                name="notes"
+                                rows="5"
+                                placeholder="Anything you'd like your barber to know?"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 5 -->
+                    <div class="booking-step">
+
+                        <div class="booking-step-heading">
+
+                            <span class="step-number">05</span>
+
+                            <div>
+                                <h3>Confirm Your Booking</h3>
+
+                                <p>
+                                    Review our terms before confirming.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <label class="checkbox-label">
+
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                name="terms"
+                                required
+                            >
+
+                            <span>
+                                I agree to the
+                                <a
+                                    href="terms.html"
+                                    target="_blank"
+                                >
+                                    Terms &amp; Conditions
+                                </a>
+                                and understand that my appointment is
+                                subject to availability.
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary booking-submit"
+                        >
+                            Confirm Booking
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- =========================
+                     BOOKING CONFIRMATION
+                ========================== -->
+                <section
+                    class="booking-confirmation"
+                    id="bookingConfirmation"
+                    hidden
+                    aria-live="polite"
+                >
+
+                    <div class="confirmation-icon">
+                        ✓
+                    </div>
+
+                    <p class="eyebrow">
+                        BOOKING CONFIRMED
+                    </p>
+
+                    <h2>
+                        You're All Set.
+                    </h2>
+
+                    <p>
+                        Thanks for booking with Natal's Barber Shop.
+                        We look forward to seeing you.
+                    </p>
+
+
+                    <!-- Appointment Summary -->
+                    <div class="appointment-summary">
+
+                        <div class="summary-row">
+                            <span>Service</span>
+                            <strong id="summaryService">—</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Barber</span>
+                            <strong id="summaryBarber">—</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Date</span>
+                            <strong id="summaryDate">—</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Time</span>
+                            <strong id="summaryTime">—</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Customer</span>
+                            <strong id="summaryCustomer">—</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Total</span>
+                            <strong id="summaryPrice">—</strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Calendar Options -->
+                    <div class="calendar-options">
+
+                        <h3>
+                            Add to Your Calendar
+                        </h3>
+
+                        <p>
+                            Save your appointment so you don't forget.
+                        </p>
+
+
+                        <div class="calendar-buttons">
+
+                            <a
+                                href="#"
+                                id="googleCalendarLink"
+                                class="btn btn-primary"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                Google Calendar
+                            </a>
+
+                            <a
+                                href="#"
+                                id="appleCalendarLink"
+                                class="btn btn-secondary"
+                                download="natals-barber-appointment.ics"
+                            >
+                                Apple Calendar
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Confirmation Contact -->
+                    <div class="confirmation-contact">
+
+                        <p>
+                            Natal's Barber Shop
+                        </p>
+
+                        <p>
+                            24 Rivonia Road, Sandton,
+                            Johannesburg
+                        </p>
+
+                        <a href="tel:+27608158836">
+                            +27 608158836
+                        </a>
+
+                    </div>
+
+
+                    <a
+                        href="index.html"
+                        class="confirmation-home-link"
+                    >
+                        Back to Home
+                    </a>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="site-footer">
+
+        <div class="container footer-grid">
+
+            <!-- Brand -->
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="logo footer-logo"
+                    aria-label="Natal's Barber Shop Home"
+                >
+                    <span class="logo-main">NATAL'S</span>
+                    <span class="logo-sub">BARBER SHOP</span>
+                </a>
+
+                <p>
+                    Sharp cuts. Good company.
+                </p>
+
+            </div>
+
+
+            <!-- Navigation -->
+            <div class="footer-column">
+
+                <h3>Explore</h3>
+
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="contact.html">Contact</a>
+                <a href="booking.html">Book Now</a>
+
+            </div>
+
+
+            <!-- Contact -->
+            <div class="footer-column">
+
+                <h3>Contact</h3>
+
+                <a href="tel:+27110000000">
+                    +27 608158836
+                </a>
+
+                <a href="mailto:hello@natalsbarbershop.co.za">
+                mudaunaftali@gmail.com
+                </a>
+
+                <p>
+                    24 Rivonia Road<br>
+                    Sandton, Johannesburg
+                </p>
+
+            </div>
+
+
+            <!-- Hours -->
+            <div class="footer-column">
+
+                <h3>Hours</h3>
+
+                <p>
+                    Mon – Fri<br>
+                    08:00 – 18:00
+                </p>
+
+                <p>
+                    Saturday<br>
+                    08:00 – 16:00
+                </p>
+
+                <p>
+                    Sunday<br>
+                    Closed
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="container footer-bottom">
+
+            <p>
+                &copy; 2026 Natal's Barber Shop. All rights reserved.
+            </p>
+
+            <div class="footer-legal">
+
+                <a href="terms.html">
+                    Terms &amp; Conditions
+                </a>
+
+                <a href="privacy.html">
+                    Privacy Policy
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- External JavaScript -->
+    <script src="js/booking.js"></script>
+
+</body>
+</html>
