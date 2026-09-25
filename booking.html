@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,18 +46,34 @@
 
             <nav class="main-nav" aria-label="Main navigation">
 
-                <a href="index.html">Home</a>
+                <a href="index.html">
+                    Home
+                </a>
 
-                
+                <a href="services.html">
+                    Services
+                </a>
 
-                <a href="about.html">About</a>
-                <a href="services.html">Services</a>
+                <a href="barbers.html">
+                    Barbers
+                </a>
 
-                <a href="contact.html">Contact</a>
+                <a href="gallery.html">
+                    Gallery
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
 
                 <a
                     href="booking.html"
                     class="nav-book active"
+                    aria-current="page"
                 >
                     Book Now
                 </a>
@@ -77,9 +94,13 @@
 
             <div class="container">
 
-                <p class="eyebrow">BOOK YOUR CHAIR</p>
+                <p class="eyebrow">
+                    BOOK YOUR CHAIR
+                </p>
 
-                <h1>Your Next Cut Starts Here.</h1>
+                <h1>
+                    Your Next Cut Starts Here.
+                </h1>
 
                 <p class="hero-text">
                     Choose your service, barber, date and time.
@@ -100,9 +121,13 @@
 
                 <div class="section-heading">
 
-                    <p class="eyebrow">MAKE AN APPOINTMENT</p>
+                    <p class="eyebrow">
+                        MAKE AN APPOINTMENT
+                    </p>
 
-                    <h2>Book Your Visit.</h2>
+                    <h2>
+                        Book Your Visit.
+                    </h2>
 
                     <p>
                         Select your preferred service and barber,
@@ -118,6 +143,7 @@
                 <form
                     class="booking-form"
                     id="bookingForm"
+                    novalidate
                 >
 
                     <!-- STEP 1 -->
@@ -125,10 +151,14 @@
 
                         <div class="booking-step-heading">
 
-                            <span class="step-number">01</span>
+                            <span class="step-number">
+                                01
+                            </span>
 
                             <div>
-                                <h3>Choose Your Service</h3>
+                                <h3>
+                                    Choose Your Service
+                                </h3>
 
                                 <p>
                                     What would you like us to do?
@@ -246,14 +276,20 @@
 
                         <div class="booking-step-heading">
 
-                            <span class="step-number">02</span>
+                            <span class="step-number">
+                                02
+                            </span>
 
                             <div>
-                                <h3>Choose Your Barber</h3>
+
+                                <h3>
+                                    Choose Your Barber
+                                </h3>
 
                                 <p>
                                     Pick the barber you'd like to visit.
                                 </p>
+
                             </div>
 
                         </div>
@@ -299,14 +335,20 @@
 
                         <div class="booking-step-heading">
 
-                            <span class="step-number">03</span>
+                            <span class="step-number">
+                                03
+                            </span>
 
                             <div>
-                                <h3>Choose Date &amp; Time</h3>
+
+                                <h3>
+                                    Choose Date &amp; Time
+                                </h3>
 
                                 <p>
                                     Select a date and appointment time.
                                 </p>
+
                             </div>
 
                         </div>
@@ -314,7 +356,7 @@
 
                         <div class="form-grid">
 
-                            <!-- Date -->
+                            <!-- DATE -->
                             <div class="form-group">
 
                                 <label for="date">
@@ -326,12 +368,27 @@
                                     id="date"
                                     name="date"
                                     required
+                                    aria-describedby="dateHelp"
                                 >
+
+                                <small
+                                    id="dateHelp"
+                                    class="form-help"
+                                >
+                                    Monday–Friday: 08:00–18:00.
+                                    Saturday: 08:00–16:00.
+                                    Sunday closed.
+                                </small>
+
+                                <small
+                                    class="form-error"
+                                    id="dateError"
+                                ></small>
 
                             </div>
 
 
-                            <!-- Time -->
+                            <!-- TIME -->
                             <div class="form-group">
 
                                 <label for="time">
@@ -345,42 +402,20 @@
                                 >
 
                                     <option value="">
-                                        Select a time
+                                        Select a date first
                                     </option>
 
-                                    <option value="08:00">08:00</option>
-                                    <option value="08:30">08:30</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="09:30">09:30</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="10:30">10:30</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="11:30">11:30</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="12:30">12:30</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="13:30">13:30</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="14:30">14:30</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="15:30">15:30</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="16:30">16:30</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="17:30">17:30</option>
-
                                 </select>
+
+                                <small
+                                    class="form-help"
+                                >
+                                    Appointments start every 30 minutes.
+                                </small>
 
                             </div>
 
                         </div>
-
-
-                        <p class="booking-note">
-                            Monday–Friday: 08:00–18:00 |
-                            Saturday: 08:00–16:00 |
-                            Sunday: Closed
-                        </p>
 
                     </div>
 
@@ -390,14 +425,20 @@
 
                         <div class="booking-step-heading">
 
-                            <span class="step-number">04</span>
+                            <span class="step-number">
+                                04
+                            </span>
 
                             <div>
-                                <h3>Your Details</h3>
+
+                                <h3>
+                                    Your Details
+                                </h3>
 
                                 <p>
                                     Tell us who we're booking for.
                                 </p>
+
                             </div>
 
                         </div>
@@ -405,7 +446,7 @@
 
                         <div class="form-grid">
 
-                            <!-- Name -->
+                            <!-- NAME -->
                             <div class="form-group">
 
                                 <label for="customerName">
@@ -424,7 +465,7 @@
                             </div>
 
 
-                            <!-- Email -->
+                            <!-- EMAIL -->
                             <div class="form-group">
 
                                 <label for="customerEmail">
@@ -443,7 +484,7 @@
                             </div>
 
 
-                            <!-- Phone -->
+                            <!-- PHONE -->
                             <div class="form-group">
 
                                 <label for="customerPhone">
@@ -454,22 +495,42 @@
                                     type="tel"
                                     id="customerPhone"
                                     name="customerPhone"
-                                    placeholder="+27 00 000 0000"
+                                    placeholder="+27 82 123 4567"
                                     autocomplete="tel"
+                                    inputmode="tel"
+                                    pattern="^\+27\s[0-9]{2}\s[0-9]{3}\s[0-9]{4}$"
+                                    title="Enter a valid South African number, e.g. +27 82 123 4567"
+                                    maxlength="16"
                                     required
                                 >
+
+                                <small
+                                    class="form-help"
+                                >
+                                    Format: +27 82 123 4567
+                                </small>
+
+                                <small
+                                    class="form-error"
+                                    id="phoneError"
+                                ></small>
 
                             </div>
 
                         </div>
 
 
-                        <!-- Notes -->
+                        <!-- NOTES -->
                         <div class="form-group">
 
                             <label for="notes">
+
                                 Notes
-                                <span class="optional">Optional</span>
+
+                                <span class="optional">
+                                    Optional
+                                </span>
+
                             </label>
 
                             <textarea
@@ -489,14 +550,20 @@
 
                         <div class="booking-step-heading">
 
-                            <span class="step-number">05</span>
+                            <span class="step-number">
+                                05
+                            </span>
 
                             <div>
-                                <h3>Confirm Your Booking</h3>
+
+                                <h3>
+                                    Confirm Your Booking
+                                </h3>
 
                                 <p>
                                     Review our terms before confirming.
                                 </p>
+
                             </div>
 
                         </div>
@@ -512,15 +579,20 @@
                             >
 
                             <span>
+
                                 I agree to the
+
                                 <a
                                     href="terms.html"
                                     target="_blank"
+                                    rel="noopener"
                                 >
                                     Terms &amp; Conditions
                                 </a>
-                                and understand that my appointment is
-                                subject to availability.
+
+                                and understand that my appointment
+                                is subject to availability.
+
                             </span>
 
                         </label>
@@ -566,7 +638,7 @@
                     </p>
 
 
-                    <!-- Appointment Summary -->
+                    <!-- APPOINTMENT SUMMARY -->
                     <div class="appointment-summary">
 
                         <div class="summary-row">
@@ -602,7 +674,7 @@
                     </div>
 
 
-                    <!-- Calendar Options -->
+                    <!-- CALENDAR -->
                     <div class="calendar-options">
 
                         <h3>
@@ -610,9 +682,9 @@
                         </h3>
 
                         <p>
-                            Save your appointment so you don't forget.
+                            Save your appointment and set a reminder
+                            so you don't forget.
                         </p>
-
 
                         <div class="calendar-buttons">
 
@@ -623,7 +695,7 @@
                                 target="_blank"
                                 rel="noopener"
                             >
-                                Google Calendar
+                                Add to Google Calendar
                             </a>
 
                             <a
@@ -632,7 +704,7 @@
                                 class="btn btn-secondary"
                                 download="natals-barber-appointment.ics"
                             >
-                                Apple Calendar
+                                Add to Device Calendar
                             </a>
 
                         </div>
@@ -640,7 +712,7 @@
                     </div>
 
 
-                    <!-- Confirmation Contact -->
+                    <!-- CONTACT -->
                     <div class="confirmation-contact">
 
                         <p>
@@ -648,12 +720,16 @@
                         </p>
 
                         <p>
-                            24 Rivonia Road, Sandton,
-                            Johannesburg
+                            24 Rivonia Road<br>
+                            Sandton, Johannesburg
                         </p>
 
                         <a href="tel:+27608158836">
-                            +27 608158836
+                            +27 60 815 8836
+                        </a>
+
+                        <a href="mailto:mudaunaftali@gmail.com">
+                            mudaunaftali@gmail.com
                         </a>
 
                     </div>
@@ -682,7 +758,7 @@
 
         <div class="container footer-grid">
 
-            <!-- Brand -->
+            <!-- BRAND -->
             <div class="footer-brand">
 
                 <a
@@ -690,8 +766,15 @@
                     class="logo footer-logo"
                     aria-label="Natal's Barber Shop Home"
                 >
-                    <span class="logo-main">NATAL'S</span>
-                    <span class="logo-sub">BARBER SHOP</span>
+
+                    <span class="logo-main">
+                        NATAL'S
+                    </span>
+
+                    <span class="logo-sub">
+                        BARBER SHOP
+                    </span>
+
                 </a>
 
                 <p>
@@ -701,31 +784,57 @@
             </div>
 
 
-            <!-- Navigation -->
+            <!-- NAVIGATION -->
             <div class="footer-column">
 
-                <h3>Explore</h3>
+                <h3>
+                    Explore
+                </h3>
 
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="services.html">Services</a>
-                <a href="contact.html">Contact</a>
-                <a href="booking.html">Book Now</a>
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="services.html">
+                    Services
+                </a>
+
+                <a href="barbers.html">
+                    Barbers
+                </a>
+
+                <a href="gallery.html">
+                    Gallery
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="booking.html">
+                    Book Now
+                </a>
 
             </div>
 
 
-            <!-- Contact -->
+            <!-- CONTACT -->
             <div class="footer-column">
 
-                <h3>Contact</h3>
+                <h3>
+                    Contact
+                </h3>
 
-                <a href="tel:+27110000000">
-                    +27 608158836
+                <a href="tel:+27608158836">
+                    +27 60 815 8836
                 </a>
 
-                <a href="mailto:hello@natalsbarbershop.co.za">
-                mudaunaftali@gmail.com
+                <a href="mailto:mudaunaftali@gmail.com">
+                    mudaunaftali@gmail.com
                 </a>
 
                 <p>
@@ -736,10 +845,12 @@
             </div>
 
 
-            <!-- Hours -->
+            <!-- HOURS -->
             <div class="footer-column">
 
-                <h3>Hours</h3>
+                <h3>
+                    Hours
+                </h3>
 
                 <p>
                     Mon – Fri<br>
@@ -764,7 +875,8 @@
         <div class="container footer-bottom">
 
             <p>
-                &copy; 2026 Natal's Barber Shop. All rights reserved.
+                &copy; 2026 Natal's Barber Shop.
+                All rights reserved.
             </p>
 
             <div class="footer-legal">
@@ -784,7 +896,7 @@
     </footer>
 
 
-    <!-- External JavaScript -->
+    <!-- JavaScript -->
     <script src="js/booking.js"></script>
 
 </body>

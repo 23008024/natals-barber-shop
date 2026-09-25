@@ -1,517 +1,621 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     const bookingForm = document.getElementById("bookingForm");
-    const bookingConfirmation = document.getElementById("bookingConfirmation");
-
-    if (!bookingForm || !bookingConfirmation) {
-        console.error("Booking form or confirmation section not found.");
-        return;
-    }
-
     const serviceInput = document.getElementById("service");
     const barberInput = document.getElementById("barber");
     const dateInput = document.getElementById("date");
     const timeInput = document.getElementById("time");
 
-    const nameInput = document.getElementById("customerName");
-    const emailInput = document.getElementById("customerEmail");
-    const phoneInput = document.getElementById("customerPhone");
-    const notesInput = document.getElementById("notes");
-    const termsInput = document.getElementById("terms");
+    const bookingConfirmation =
+        document.getElementById("bookingConfirmation");
 
-    const summaryService = document.getElementById("summaryService");
-    const summaryBarber = document.getElementById("summaryBarber");
-    const summaryDate = document.getElementById("summaryDate");
-    const summaryTime = document.getElementById("summaryTime");
-    const summaryCustomer = document.getElementById("summaryCustomer");
-    const summaryPrice = document.getElementById("summaryPrice");
+    const summaryService =
+        document.getElementById("summaryService");
+    const summaryBarber =
+        document.getElementById("summaryBarber");
+    const summaryDate =
+        document.getElementById("summaryDate");
+    const summaryTime =
+        document.getElementById("summaryTime");
+    const summaryCustomer =
+        document.getElementById("summaryCustomer");
+    const summaryPrice =
+        document.getElementById("summaryPrice");
 
-    const googleCalendarLink = document.getElementById("googleCalendarLink");
-    const appleCalendarLink = document.getElementById("appleCalendarLink");
+    const googleCalendarLink =
+        document.getElementById("googleCalendarLink");
+    const appleCalendarLink =
+        document.getElementById("appleCalendarLink");
 
-    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkjgzgvq";
+    const FORMSPREE_ENDPOINT =
+        "https://formspree.io/f/xkjgzgvq";
 
-    const shop = {
-        name: "Natal's Barber Shop",
-        address: "24 Rivonia Road, Sandton, Johannesburg, Gauteng, South Africa"
-    };
-
+    /*
+     * Service durations are the actual appointment durations.
+     * The booking system will enforce a minimum of 60 minutes.
+     */
     const serviceData = {
-        "Classic Cut": { price: 220, duration: 45 },
-        "Skin Fade": { price: 260, duration: 60 },
-        "Textured Cut": { price: 240, duration: 45 },
-        "Kids Cut": { price: 170, duration: 30 },
-        "Beard Trim": { price: 150, duration: 30 },
-        "Hot Towel Shave": { price: 190, duration: 45 },
-        "Beard Shape & Line-Up": { price: 130, duration: 30 },
-        "Cut & Beard": { price: 330, duration: 75 },
-        "Natal's Signature": { price: 390, duration: 90 },
-        "Father & Son": { price: 360, duration: 90 }
+        "Classic Cut": {
+            price: 220,
+            duration: 45
+        },
+        "Skin Fade": {
+            price: 260,
+            duration: 60
+        },
+        "Textured Cut": {
+            price: 240,
+            duration: 45
+        },
+        "Kids Cut": {
+            price: 170,
+            duration: 30
+        },
+        "Beard Trim": {
+            price: 150,
+            duration: 30
+        },
+        "Hot Towel Shave": {
+            price: 190,
+            duration: 45
+        },
+        "Beard Shape & Line-Up": {
+            price: 130,
+            duration: 30
+        },
+        "Cut & Beard": {
+            price: 330,
+            duration: 75
+        },
+        "Natal's Signature": {
+            price: 390,
+            duration: 90
+        },
+        "Father & Son": {
+            price: 360,
+            duration: 90
+        }
     };
 
-    const serviceMap = {
-        "classic-cut": "Classic Cut",
-        "skin-fade": "Skin Fade",
-        "textured-cut": "Textured Cut",
-        "kids-cut": "Kids Cut",
-        "beard-trim": "Beard Trim",
-        "hot-towel-shave": "Hot Towel Shave",
-        "beard-shape": "Beard Shape & Line-Up",
-        "cut-and-beard": "Cut & Beard",
-        "natals-signature": "Natal's Signature",
-        "father-and-son": "Father & Son"
-    };
-
-    /* ------------------------------
-       MINIMUM DATE
-    ------------------------------ */
-
+// Get today's date automatically from the user's device
+function getTodayString() {
     const today = new Date();
 
-    const todayString =
-        today.getFullYear() +
-        "-" +
-        String(today.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(today.getDate()).padStart(2, "0");
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-    dateInput.min = todayString;
+    return `${year}-${month}-${day}`;
+}
 
-    /* ------------------------------
-       SERVICE FROM URL
-    ------------------------------ */
+// Prevent users from selecting a date in the past
+if (dateInput) {
+    dateInput.min = getTodayString();
+}
 
-    const params = new URLSearchParams(window.location.search);
-    const requestedService = params.get("service");
+    /*
+     * Business hours:
+     *
+     * Monday-Friday: 08:00-18:00
+     * Saturday:      08:00-16:00
+     * Sunday:        Closed
+     *
+     * Booking times are offered every 30 minutes.
+     */
+    function updateAvailableTimes() {
+        timeInput.innerHTML = "";
 
-    if (requestedService && serviceMap[requestedService]) {
-        serviceInput.value = serviceMap[requestedService];
-    }
-
-    /* ------------------------------
-       DATE CHANGE
-    ------------------------------ */
-
-    dateInput.addEventListener("change", () => {
-        if (!dateInput.value) return;
-
-        const selectedDate = new Date(dateInput.value + "T00:00:00");
-
-        if (selectedDate.getDay() === 0) {
-            alert("We are closed on Sundays. Please choose another date.");
-            dateInput.value = "";
+        if (!dateInput.value) {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Select a date first";
+            timeInput.appendChild(option);
             return;
         }
 
-        updateAvailableTimes();
-    });
+        const selectedDate =
+            new Date(dateInput.value + "T00:00:00");
 
-    serviceInput.addEventListener("change", updateAvailableTimes);
-
-    /* ------------------------------
-       FILTER AVAILABLE TIMES
-    ------------------------------ */
-
-    function updateAvailableTimes() {
-        if (!dateInput.value) return;
-
-        const selectedDate = new Date(dateInput.value + "T00:00:00");
         const day = selectedDate.getDay();
 
-        const service = serviceInput.value;
-        const duration = serviceData[service]?.duration || 30;
+        // Sunday
+        if (day === 0) {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Sunday — Closed";
+            timeInput.appendChild(option);
+            return;
+        }
 
-        // Monday-Friday = 18:00 closing
-        // Saturday = 16:00 closing
-        const closingMinutes = day === 6 ? 16 * 60 : 18 * 60;
+        // Saturday closes at 16:00.
+        // Monday-Friday closes at 18:00.
+        const closingMinutes =
+            day === 6 ? 16 * 60 : 18 * 60;
 
-        Array.from(timeInput.options).forEach(option => {
-            if (!option.value) return;
+        const selectedService = serviceInput.value;
 
-            const [hours, minutes] = option.value.split(":").map(Number);
+        /*
+         * Enforce a minimum appointment duration of 60 minutes.
+         * Longer services keep their actual duration.
+         */
+        const duration = Math.max(
+            serviceData[selectedService]?.duration || 60,
+            60
+        );
 
-            const startMinutes = hours * 60 + minutes;
-            const endMinutes = startMinutes + duration;
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select a time";
+        timeInput.appendChild(defaultOption);
 
-            option.disabled = endMinutes > closingMinutes;
-        });
+        /*
+         * Generate times every 30 minutes.
+         *
+         * A time is only shown if the complete service
+         * can finish before or exactly at closing time.
+         */
+        for (let hour = 8; hour <= 17; hour++) {
+            for (const minutes of [0, 30]) {
+                const startMinutes =
+                    hour * 60 + minutes;
 
-        if (
-            timeInput.value &&
-            timeInput.selectedOptions[0]?.disabled
-        ) {
-            timeInput.value = "";
+                const endMinutes =
+                    startMinutes + duration;
+
+                // Don't allow appointments to run past closing.
+                if (endMinutes > closingMinutes) {
+                    continue;
+                }
+
+                const time =
+                    String(hour).padStart(2, "0") +
+                    ":" +
+                    String(minutes).padStart(2, "0");
+
+                const option =
+                    document.createElement("option");
+
+                option.value = time;
+                option.textContent = time;
+
+                timeInput.appendChild(option);
+            }
+        }
+
+        // If no times are available.
+        if (timeInput.options.length === 1) {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "No available times";
+            timeInput.appendChild(option);
         }
     }
 
+    /*
+     * Update available times whenever the
+     * selected date or service changes.
+     */
+    if (dateInput) {
+        dateInput.addEventListener(
+            "change",
+            updateAvailableTimes
+        );
+    }
+
+    if (serviceInput) {
+        serviceInput.addEventListener(
+            "change",
+            updateAvailableTimes
+        );
+    }
+
+    // Initial setup
     updateAvailableTimes();
 
-    /* ------------------------------
-       FORM SUBMISSION
-    ------------------------------ */
+    /*
+     * Format date for the confirmation message.
+     */
+    function formatDate(dateString) {
+        if (!dateString) return "";
 
-    bookingForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+        const date =
+            new Date(dateString + "T00:00:00");
 
-        if (!bookingForm.checkValidity()) {
-            bookingForm.reportValidity();
-            return;
-        }
-
-        if (!termsInput.checked) {
-            alert("Please accept the Terms & Conditions before confirming your booking.");
-            return;
-        }
-
-        const service = serviceInput.value;
-        const barber = barberInput.value;
-        const date = dateInput.value;
-        const time = timeInput.value;
-        const customerName = nameInput.value.trim();
-        const customerEmail = emailInput.value.trim();
-        const customerPhone = phoneInput.value.trim();
-        const notes = notesInput ? notesInput.value.trim() : "";
-
-        const serviceInfo = serviceData[service];
-
-        if (!serviceInfo) {
-            alert("Please select a valid service.");
-            return;
-        }
-
-        const startDate = new Date(`${date}T${time}:00`);
-
-        if (isNaN(startDate.getTime())) {
-            alert("There was a problem with the selected date or time.");
-            return;
-        }
-
-        const endDate = new Date(
-            startDate.getTime() + serviceInfo.duration * 60000
-        );
-
-        /* ------------------------------
-           PREVENT DOUBLE SUBMISSION
-        ------------------------------ */
-
-        const submitButton = bookingForm.querySelector(
-            'button[type="submit"]'
-        );
-
-        const originalButtonText = submitButton
-            ? submitButton.textContent
-            : "Confirm Booking";
-
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = "Confirming Booking...";
-        }
-
-        /* ------------------------------
-           DATA SENT TO FORMSPREE
-        ------------------------------ */
-
-        const formData = new FormData();
-
-        formData.append("_subject", `New Booking - ${service} - ${customerName}`);
-
-        formData.append("Customer Name", customerName);
-        formData.append("Customer Email", customerEmail);
-        formData.append("Customer Phone", customerPhone);
-
-        formData.append("Service", service);
-        formData.append("Barber", barber);
-
-        formData.append("Appointment Date", formatDate(startDate));
-        formData.append(
-            "Appointment Time",
-            `${formatTime(startDate)} - ${formatTime(endDate)}`
-        );
-
-        formData.append("Duration", `${serviceInfo.duration} minutes`);
-        formData.append("Price", `R${serviceInfo.price}`);
-
-        formData.append("Shop", shop.name);
-        formData.append("Location", shop.address);
-
-        formData.append(
-            "Customer Notes",
-            notes || "No additional notes."
-        );
-
-        formData.append("Booking Status", "Confirmed");
-
-        try {
-            /* ------------------------------
-               SEND TO FORMSPREE
-            ------------------------------ */
-
-            const response = await fetch(FORMSPREE_ENDPOINT, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    Accept: "application/json"
-                }
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    result?.errors?.map(error => error.message).join(", ") ||
-                    "Form submission failed."
-                );
-            }
-
-            /* ------------------------------
-               UPDATE CONFIRMATION
-            ------------------------------ */
-
-            summaryService.textContent = service;
-            summaryBarber.textContent = barber;
-            summaryDate.textContent = formatDate(startDate);
-            summaryTime.textContent =
-                `${formatTime(startDate)} – ${formatTime(endDate)}`;
-            summaryCustomer.textContent = customerName;
-            summaryPrice.textContent = `R${serviceInfo.price}`;
-
-            /* ------------------------------
-               GOOGLE CALENDAR
-            ------------------------------ */
-
-            if (googleCalendarLink) {
-                googleCalendarLink.href = createGoogleCalendarUrl({
-                    service,
-                    barber,
-                    startDate,
-                    endDate,
-                    customerName,
-                    customerPhone,
-                    notes
-                });
-            }
-
-            /* ------------------------------
-               APPLE CALENDAR
-            ------------------------------ */
-
-            if (appleCalendarLink) {
-                const icsContent = createICS({
-                    service,
-                    barber,
-                    startDate,
-                    endDate,
-                    customerName,
-                    customerEmail,
-                    customerPhone,
-                    notes
-                });
-
-                const blob = new Blob([icsContent], {
-                    type: "text/calendar;charset=utf-8"
-                });
-
-                const calendarUrl = URL.createObjectURL(blob);
-
-                appleCalendarLink.href = calendarUrl;
-                appleCalendarLink.download =
-                    "natals-barber-shop-appointment.ics";
-            }
-
-            /* ------------------------------
-               SAVE BOOKING LOCALLY
-            ------------------------------ */
-
-            localStorage.setItem(
-                "natalsLastBooking",
-                JSON.stringify({
-                    shop: shop.name,
-                    service,
-                    barber,
-                    date,
-                    time,
-                    customerName,
-                    customerEmail,
-                    customerPhone,
-                    notes,
-                    price: serviceInfo.price,
-                    duration: serviceInfo.duration
-                })
-            );
-
-            /* ------------------------------
-               SHOW SUCCESS MESSAGE
-            ------------------------------ */
-
-            bookingForm.style.display = "none";
-
-            bookingConfirmation.hidden = false;
-            bookingConfirmation.style.display = "block";
-            bookingConfirmation.classList.add("show");
-
-            setTimeout(() => {
-                bookingConfirmation.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-            }, 100);
-
-        } catch (error) {
-            console.error("Booking submission error:", error);
-
-            alert(
-                "We could not confirm your booking right now. " +
-                "Please check your internet connection and try again."
-            );
-
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = originalButtonText;
-            }
-        }
-    });
-
-    /* ------------------------------
-       FORMAT DATE
-    ------------------------------ */
-
-    function formatDate(date) {
         return date.toLocaleDateString("en-ZA", {
             weekday: "long",
-            day: "numeric",
+            year: "numeric",
             month: "long",
-            year: "numeric"
+            day: "numeric"
         });
     }
 
-    /* ------------------------------
-       FORMAT TIME
-    ------------------------------ */
-
-    function formatTime(date) {
-        return date.toLocaleTimeString("en-ZA", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false
-        });
+    /*
+     * Convert YYYY-MM-DD + HH:MM
+     * into a JavaScript Date object.
+     */
+    function createAppointmentDate(date, time) {
+        return new Date(`${date}T${time}:00`);
     }
 
-    /* ------------------------------
-       GOOGLE CALENDAR
-    ------------------------------ */
+    /*
+     * Add minutes to a date.
+     */
+    function addMinutes(date, minutes) {
+        return new Date(
+            date.getTime() + minutes * 60000
+        );
+    }
 
-    function createGoogleCalendarUrl({
+    /*
+     * Format a date for Google Calendar.
+     */
+    function formatGoogleDate(date) {
+        return date
+            .toISOString()
+            .replace(/[-:]/g, "")
+            .replace(/\.\d{3}/, "");
+    }
+
+    /*
+     * Create Google Calendar link.
+     */
+    function createGoogleCalendarLink(
         service,
-        barber,
-        startDate,
-        endDate,
-        customerName,
-        customerPhone,
-        notes
-    }) {
-        const start = formatCalendarDate(startDate);
-        const end = formatCalendarDate(endDate);
+        date,
+        time,
+        duration
+    ) {
+        const start =
+            createAppointmentDate(date, time);
+
+        const end =
+            addMinutes(start, duration);
+
+        const title =
+            encodeURIComponent(
+                `Natal's Barber Shop - ${service}`
+            );
+
+        const dates =
+            `${formatGoogleDate(start)}/${formatGoogleDate(end)}`;
 
         const details =
-            `Booking at ${shop.name}\n` +
-            `Service: ${service}\n` +
-            `Barber: ${barber}\n` +
-            `Customer: ${customerName}\n` +
-            `Phone: ${customerPhone}` +
-            (notes ? `\nNotes: ${notes}` : "");
+            encodeURIComponent(
+                `Appointment at Natal's Barber Shop for ${service}.`
+            );
+
+        const location =
+            encodeURIComponent("Natal's Barber Shop");
 
         return (
             "https://calendar.google.com/calendar/render" +
             "?action=TEMPLATE" +
-            "&text=" +
-            encodeURIComponent(`${shop.name} - ${service}`) +
-            "&dates=" +
-            encodeURIComponent(`${start}/${end}`) +
-            "&details=" +
-            encodeURIComponent(details) +
-            "&location=" +
-            encodeURIComponent(shop.address)
+            `&text=${title}` +
+            `&dates=${dates}` +
+            `&details=${details}` +
+            `&location=${location}`
         );
     }
 
-    /* ------------------------------
-       APPLE CALENDAR ICS
-    ------------------------------ */
-
-    function createICS({
+    /*
+     * Create Apple Calendar (.ics) download.
+     */
+    function createAppleCalendarFile(
         service,
-        barber,
-        startDate,
-        endDate,
-        customerName,
-        customerEmail,
-        customerPhone,
-        notes
-    }) {
-        const uid =
-            Date.now() +
-            "-" +
-            Math.random().toString(36).substring(2) +
-            "@natalsbarbershop";
+        date,
+        time,
+        duration
+    ) {
+        const start =
+            createAppointmentDate(date, time);
 
-        const description =
-            `Booking at ${shop.name}\n` +
-            `Service: ${service}\n` +
-            `Barber: ${barber}\n` +
-            `Customer: ${customerName}\n` +
-            `Email: ${customerEmail}\n` +
-            `Phone: ${customerPhone}` +
-            (notes ? `\nNotes: ${notes}` : "");
+        const end =
+            addMinutes(start, duration);
 
-        return [
-            "BEGIN:VCALENDAR",
-            "VERSION:2.0",
-            "PRODID:-//Natal's Barber Shop//Booking//EN",
-            "CALSCALE:GREGORIAN",
-            "BEGIN:VEVENT",
-            `UID:${uid}`,
-            `DTSTAMP:${formatICSDate(new Date())}`,
-            `DTSTART:${formatICSDate(startDate)}`,
-            `DTEND:${formatICSDate(endDate)}`,
-            `SUMMARY:${escapeICS(`${shop.name} - ${service}`)}`,
-            `DESCRIPTION:${escapeICS(description)}`,
-            `LOCATION:${escapeICS(shop.address)}`,
-            "STATUS:CONFIRMED",
-            "END:VEVENT",
-            "END:VCALENDAR"
-        ].join("\r\n");
+        const startUTC =
+            formatGoogleDate(start);
+
+        const endUTC =
+            formatGoogleDate(end);
+
+        const icsContent =
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Natal's Barber Shop//Booking//EN
+BEGIN:VEVENT
+DTSTART:${startUTC}
+DTEND:${endUTC}
+SUMMARY:Natal's Barber Shop - ${service}
+DESCRIPTION:Appointment at Natal's Barber Shop for ${service}.
+LOCATION:Natal's Barber Shop
+END:VEVENT
+END:VCALENDAR`;
+
+        const blob =
+            new Blob(
+                [icsContent],
+                { type: "text/calendar;charset=utf-8" }
+            );
+
+        return URL.createObjectURL(blob);
     }
 
-    function formatCalendarDate(date) {
-        return (
-            date.getFullYear() +
-            String(date.getMonth() + 1).padStart(2, "0") +
-            String(date.getDate()).padStart(2, "0") +
-            "T" +
-            String(date.getHours()).padStart(2, "0") +
-            String(date.getMinutes()).padStart(2, "0") +
-            "00"
+    /*
+     * Form submission.
+     */
+    if (bookingForm) {
+        bookingForm.addEventListener(
+            "submit",
+            async (event) => {
+                event.preventDefault();
+
+                const service =
+                    serviceInput.value;
+
+                const barber =
+                    barberInput.value;
+
+                const date =
+                    dateInput.value;
+
+                const time =
+                    timeInput.value;
+
+                const customerName =
+                    document.getElementById(
+                        "customerName"
+                    ).value;
+
+                const customerEmail =
+                    document.getElementById(
+                        "customerEmail"
+                    ).value;
+
+                const customerPhone =
+                    document.getElementById(
+                        "customerPhone"
+                    ).value;
+
+                const notes =
+                    document.getElementById(
+                        "notes"
+                    ).value;
+
+                const terms =
+                    document.getElementById(
+                        "terms"
+                    );
+
+                // Basic validation
+                if (
+                    !service ||
+                    !barber ||
+                    !date ||
+                    !time ||
+                    !customerName ||
+                    !customerEmail ||
+                    !customerPhone ||
+                    !terms.checked
+                ) {
+                    alert(
+                        "Please complete all required fields."
+                    );
+                    return;
+                }
+
+                const selectedService =
+                    serviceData[service];
+
+                if (!selectedService) {
+                    alert(
+                        "Please select a valid service."
+                    );
+                    return;
+                }
+
+                /*
+                 * Enforce the minimum 60-minute duration
+                 * when creating the appointment.
+                 */
+                const duration = Math.max(
+                    selectedService.duration,
+                    60
+                );
+
+                const appointmentStart =
+                    createAppointmentDate(
+                        date,
+                        time
+                    );
+
+                const appointmentEnd =
+                    addMinutes(
+                        appointmentStart,
+                        duration
+                    );
+
+                /*
+                 * Double-check business hours before submitting.
+                 */
+                const day =
+                    appointmentStart.getDay();
+
+                if (day === 0) {
+                    alert(
+                        "Natal's Barber Shop is closed on Sundays."
+                    );
+                    return;
+                }
+
+                const closingMinutes =
+                    day === 6
+                        ? 16 * 60
+                        : 18 * 60;
+
+                const startMinutes =
+                    appointmentStart.getHours() * 60 +
+                    appointmentStart.getMinutes();
+
+                if (
+                    startMinutes + duration >
+                    closingMinutes
+                ) {
+                    alert(
+                        "This appointment would run past closing time. Please select an earlier time."
+                    );
+                    updateAvailableTimes();
+                    return;
+                }
+
+                const submitButton =
+                    bookingForm.querySelector(
+                        'button[type="submit"]'
+                    );
+
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent =
+                        "Sending...";
+                }
+
+                /*
+                 * Send booking to Formspree.
+                 */
+                const formData =
+                    new FormData(bookingForm);
+
+                formData.append(
+                    "_subject",
+                    `New Booking - ${service}`
+                );
+
+                formData.append(
+                    "serviceDuration",
+                    `${duration} minutes`
+                );
+
+                try {
+                    const response =
+                        await fetch(
+                            FORMSPREE_ENDPOINT,
+                            {
+                                method: "POST",
+                                body: formData,
+                                headers: {
+                                    Accept:
+                                        "application/json"
+                                }
+                            }
+                        );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Booking submission failed."
+                        );
+                    }
+
+                    /*
+                     * Fill confirmation details.
+                     */
+                    summaryService.textContent =
+                        service;
+
+                    summaryBarber.textContent =
+                        barber;
+
+                    summaryDate.textContent =
+                        formatDate(date);
+
+                    summaryTime.textContent =
+                        `${time} (${duration} min)`;
+
+                    summaryCustomer.textContent =
+                        customerName;
+
+                    summaryPrice.textContent =
+                        `R${selectedService.price}`;
+
+                    /*
+                     * Google Calendar
+                     */
+                    if (googleCalendarLink) {
+                        googleCalendarLink.href =
+                            createGoogleCalendarLink(
+                                service,
+                                date,
+                                time,
+                                duration
+                            );
+                    }
+
+                    /*
+                     * Apple Calendar
+                     */
+                    if (appleCalendarLink) {
+                        const calendarURL =
+                            createAppleCalendarFile(
+                                service,
+                                date,
+                                time,
+                                duration
+                            );
+
+                        appleCalendarLink.href =
+                            calendarURL;
+                    }
+
+                    /*
+                     * Save booking locally.
+                     */
+                    const booking = {
+                        service,
+                        barber,
+                        date,
+                        time,
+                        duration,
+                        customerName,
+                        customerEmail,
+                        customerPhone,
+                        notes,
+                        price: selectedService.price
+                    };
+
+                    localStorage.setItem(
+                        "latestBooking",
+                        JSON.stringify(booking)
+                    );
+
+                    /*
+                     * Hide form and show confirmation.
+                     */
+                    bookingForm.style.display =
+                        "none";
+
+                    if (bookingConfirmation) {
+                        bookingConfirmation.hidden =
+                            false;
+
+                        bookingConfirmation.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+                    }
+                } catch (error) {
+                    console.error(error);
+
+                    alert(
+                        "Something went wrong while sending your booking. Please try again."
+                    );
+
+                    if (submitButton) {
+                        submitButton.disabled =
+                            false;
+
+                        submitButton.textContent =
+                            "Book Appointment";
+                    }
+                }
+            }
         );
-    }
-
-    function formatICSDate(date) {
-        return (
-            date.getUTCFullYear() +
-            String(date.getUTCMonth() + 1).padStart(2, "0") +
-            String(date.getUTCDate()).padStart(2, "0") +
-            "T" +
-            String(date.getUTCHours()).padStart(2, "0") +
-            String(date.getUTCMinutes()).padStart(2, "0") +
-            String(date.getUTCSeconds()).padStart(2, "0") +
-            "Z"
-        );
-    }
-
-    function escapeICS(value) {
-        return String(value)
-            .replace(/\\/g, "\\\\")
-            .replace(/;/g, "\\;")
-            .replace(/,/g, "\\,")
-            .replace(/\r?\n/g, "\\n");
     }
 });

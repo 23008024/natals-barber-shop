@@ -34,30 +34,18 @@
 
         <nav class="main-nav" aria-label="Main navigation">
 
-            <ul>
-
-                <li>
+            
                     <a href="index.html">Home</a>
-                </li>
+                
 
-                <li>
+            
                     <a href="about.html">About</a>
-                </li>
-
-                <li>
-                    <a href="services.html" aria-current="page">Services</a>
-                </li>
-
-                <li>
+                
+                    <a href="services.html">Services</a>
+            
                     <a href="contact.html">Contact</a>
-                </li>
-
-                <li>
+                
                     <a href="booking.html" class="nav-book">Book Now</a>
-                </li>
-
-            </ul>
-
         </nav>
 
     </div>
@@ -632,6 +620,69 @@
     </div>
 
 </footer>
+
+
+<!-- SPECIAL OFFER MODAL -->
+<div class="offer-modal" id="offerModal" aria-hidden="true">
+
+  <div class="offer-overlay" data-close-modal></div>
+
+  <div
+    class="offer-box"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="offerTitle"
+  >
+
+    <button
+      class="offer-close"
+      type="button"
+      aria-label="Close special offer"
+      data-close-modal
+    >
+      &times;
+    </button>
+
+    <div class="offer-content">
+
+      <p class="offer-label">WELCOME TO NATAL'S</p>
+
+      <h2 id="offerTitle">
+        Your First Cut<br>
+        Starts Here.
+      </h2>
+
+      <p class="offer-text">
+        New to Natal's Barber Shop? Enjoy a special
+        first-visit offer when you book your first appointment.
+      </p>
+
+      <div class="offer-highlight">
+        <span>FIRST VISIT</span>
+        <strong>10% OFF</strong>
+      </div>
+
+      <p class="offer-small">
+        Mention <strong>FIRSTCUT</strong> when booking.
+      </p>
+
+      <a href="booking.html" class="offer-button">
+        Book Your Appointment
+      </a>
+
+      <button
+        type="button"
+        class="offer-dismiss"
+        data-close-modal
+      >
+        Maybe later
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/modal.js"></script>
 
 </body>
 </html>
